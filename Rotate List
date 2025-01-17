@@ -1,0 +1,50 @@
+class Solution {
+public:
+    int getLength(ListNode * head){
+        ListNode * temp = head;
+        int count = 0;
+        while(temp != NULL){
+            count++;
+            temp = temp -> next;
+        }
+
+        return count;
+    }
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(head == NULL || head -> next == NULL){
+            return head;
+        }
+        
+        int len = getLength(head);
+        
+        if(len == k){
+            return head;
+        }
+        
+        if(k > len){
+            k = k % len;
+        }
+         
+        int pos = len - k;
+
+        ListNode * temp = head;
+
+        while(temp -> next != NULL){
+            temp = temp -> next;
+        }
+
+        temp -> next = head;
+        
+        temp = head;
+        int count = 1;
+        while(count != pos){
+            temp = temp -> next;
+            count++;
+        }
+
+        head = temp -> next;
+        temp -> next = NULL;
+
+        return head;
+    }
+};
