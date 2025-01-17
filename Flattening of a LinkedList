@@ -1,0 +1,48 @@
+class Solution {
+  public:
+    // Function which returns the  root of the flattened linked list.
+    Node * mergeList(Node * node1 , Node * node2){
+          Node * dummy = new Node(-1);
+          Node * temp = dummy;
+          
+          while(node1 != NULL && node2 != NULL){
+              if(node1 -> data <= node2 -> data){
+                  Node * newNode = new Node(node1 -> data);
+                  temp -> bottom = newNode;
+                  temp = newNode;
+                  node1 = node1 -> bottom;
+              }
+              
+              else{
+                  Node * newNode = new Node(node2 -> data);
+                  temp -> bottom = newNode;
+                  temp = newNode;
+                  node2 = node2 -> bottom;
+              }
+              
+            //   dummy -> next = NULL;
+          }
+          
+          if(node1 != NULL){
+              temp -> bottom = node1;
+          }
+          
+          if(node2 != NULL){
+              temp -> bottom = node2;
+          }
+          
+          return dummy -> bottom;
+    }
+    Node *flatten(Node *root) {
+        // Your code here
+        if(root == NULL){
+            return root;
+        }
+        
+        Node * mergeNode = flatten(root -> next);
+        
+        Node * head = mergeList(mergeNode , root);
+        
+        return head;
+    }
+};
