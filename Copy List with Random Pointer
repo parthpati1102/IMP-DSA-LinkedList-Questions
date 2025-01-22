@@ -1,0 +1,88 @@
+// Using Map Data Structure
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        Node * clone = new Node(-1);
+        Node * temp1 = clone;
+        Node * temp = head;
+
+        while(temp != NULL){
+            Node * newNode = new Node(temp -> val);
+            temp1 -> next = newNode;
+            temp1 = temp1 -> next;
+            temp = temp -> next;
+        }
+
+        clone = clone -> next;
+        temp1 = clone;
+        temp = head;
+
+        unordered_map<Node* , Node*> mp;
+
+        while(temp != NULL){
+            mp[temp] = temp1;
+            temp = temp -> next;
+            temp1 = temp1 -> next;
+        }
+         
+        temp1 = clone;
+        temp = head;
+        while(temp != NULL){
+            temp1 -> random = mp[temp -> random];
+            temp = temp -> next;
+            temp1 = temp1 -> next;
+        }
+
+        return clone;
+
+    }
+
+};
+
+//Optimal Approach
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if(head == NULL){
+            return NULL;
+        }
+
+        Node * temp = head;
+
+        while(temp != NULL){
+            Node * newNode = new Node(temp -> val);
+            newNode -> next = temp -> next;
+            temp -> next = newNode;
+            temp = temp -> next -> next;
+        }
+
+        temp = head;
+
+        while(temp != NULL){
+            
+            if(temp -> random != NULL){
+                temp -> next -> random = temp -> random -> next;
+            }
+            
+            else{
+                temp -> next -> random = NULL;
+            }
+
+            temp = temp -> next -> next;
+        }
+
+        Node * dummy = new Node(-1);
+        Node * temp1 = dummy;
+        temp = head;
+
+        while(temp != NULL){
+             temp1 -> next = temp -> next;
+             temp1 = temp -> next;
+
+             temp -> next = temp -> next -> next;
+             temp = temp -> next;
+        }
+
+        return dummy -> next;
+    }
+};
